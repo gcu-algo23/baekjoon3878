@@ -1,10 +1,10 @@
-### Gachon University 2023 Algorithm
+### Gachon University - 2023 Algorithm
 
 #### Team Project: ICPC Programming problem in Baekjoon website
 
-#### Team Group Number 4
+#### Team Group: Number 4
 
-#### Team Member
+#### Member
 
 |학과|학번|이름|
 |---|---|---|
