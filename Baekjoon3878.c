@@ -16,8 +16,7 @@ typedef struct {
 
 Point pivot;
 
-
-
+// 세 점의 위치 관계를 확인
 int ccw(Point a, Point b, Point c) {
     ll res = a.x * b.y + b.x * c.y + c.x * a.y;
     res -= b.x * a.y + c.x * b.y + a.x * c.y;
@@ -26,17 +25,20 @@ int ccw(Point a, Point b, Point c) {
     return 0;
 }
 
+// 두 점 사이의 거리의 제곱을 계산
 ll dist(Point a, Point b) {
     ll dx = a.x - b.x;
     ll dy = a.y - b.y;
     return dx * dx + dy * dy;
 }
 
+// 배열 초기화
 void init(PointArray* arr) {
     arr->points = NULL;
     arr->size = 0;
 }
 
+// 기준점을 중심으로 각도 순으로 정렬하기 위한 비교
 int compare(const void* a, const void* b) {
     Point p1 = *((Point*)a);
     Point p2 = *((Point*)b);
@@ -105,6 +107,8 @@ bool chk(Point now, PointArray* arr) {
 
     return cnt % 2 > 0;
 }
+
+//두 구간이 서로 겹치지 않는지 확인하는 함수로, 겹치지 않으면 1을 반환
 int disjoint(ll a, ll b, ll c, ll d) {
     if (a > b) {
         ll temp = a;
@@ -119,6 +123,7 @@ int disjoint(ll a, ll b, ll c, ll d) {
     return b < c || d < a;
 }
 
+//두 선분이 교차하는지 확인
 bool crash(Point a, Point b, Point c, Point d) {
     int ab = ccw(a, b, c) * ccw(a, b, d);
     int cd = ccw(c, d, a) * ccw(c, d, b);
@@ -128,17 +133,20 @@ bool crash(Point a, Point b, Point c, Point d) {
     return ab <= 0 && cd <= 0;
 }
 
+//구조체를 초기화하는 함수
 void initPointArray(PointArray* arr, int capacity) {
     arr->size = 0;
     arr->points = (Point*)malloc(sizeof(Point) * capacity);
 }
 
+// 구조체가 가리키는 동적 배열의 메모리를 해제
 void freePointArray(PointArray* arr) {
     free(arr->points);
     arr->size = 0;
     arr->points = NULL;
 }
 
+//주어진 두 다각형이 교차하는지 여부 확인
 void solve() {
     PointArray a, b, aHull, bHull;
     int n, m;
