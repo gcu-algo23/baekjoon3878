@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-#pragma warning(disable:4996)
 
-#define MAX 100
+#define MAX 105
 
 typedef struct data {
     int x, y;
-}Data;
+} Data;
 
 Data nd[MAX], md[MAX];
 int nmnm = 0;
 
-int ccw(Data p, Data q, Data r) {
-    int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-    if (val == 0) return 0;  // 일직선
-    return (val > 0) ? 1 : 2;  // 시계방향 or 시계반대방향
+int ccw(Data a, Data b, Data c) {
+    int n = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    if (n > 0) return 1;
+    if (n < 0) return -1;
+    return 0;
 }
 
 int cmp(Data a, Data b) {
@@ -62,43 +62,30 @@ void bubbleSort(Data arr[], int n) {
 }
 
 void convexHull(Data points[], int n) {
-    // 적어도 3개의 점 필요
     if (n < 3) return;
 
-    //  hull이 가장 큰 경우를 저장
     Data hull[MAX];
 
-    // 가장 왼쪽 점 찾음
     int l = 0;
     for (int i = 1; i < n; i++)
         if (points[i].x < points[l].x)
             l = i;
 
-    // 가장 왼쪽 점에서 시작해서 시계 반대 방향으로 이동
-    // 시작점에 도달할 때 까지 작동
     int p = l, q;
     int hullSize = 0;
 
     do {
-        // 현재 점을 결과에 더함
         hull[hullSize++] = points[p];
-
-        // 'q'라는 점을 찾습니다. 이때 orientation(p, x, q)가 모든 'x'에 대해 반시계 방향이어야 합니다.
-        // 핵심 아이디어는 가장 최근에 방문한 가장 반시계 방향에 있는 'q'를 추적하는 것입니다.
-        // 만약 어떤 점 'i'가 'q'보다 더 반시계 방향에 있다면, 'q'를 업데이트합니다.
         q = (p + 1) % n;
 
         for (int i = 0; i < n; i++) {
-            // 만약 어떤 점 'i'가 'q'보다 더 반시계 방향에 있다면, 'q'를 업데이트합니다.
             if (ccw(points[p], points[i], points[q]) == 2)
                 q = i;
         }
 
-        // 이제 'q'는 'p'에 대해 가장 반시계 방향에 위치한 점입니다.
-        // 다음 반복을 위해 'p'를 'q'로 설정하여, 'q'가 결과 'hull'에 추가되도록 합니다.
         p = q;
 
-    } while (p != l);  // 처음 점에 도착할 때까지 반복
+    } while (p != l);
 }
 
 int main() {
